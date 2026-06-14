@@ -110,7 +110,7 @@ store.on("error", () => {
 // Define sessionOptions as a variable
 const sessionOptions = {
     store,
-    secret: process.env.SECRET, // and this sceret is bad secret though we are in our development / beginer mode
+    secret: process.env.SECRET, // and this secret is bad secret though we are in our development / beginner mode
     resave: false, 
     saveUninitialized: true,
     cookie: {
@@ -152,6 +152,22 @@ app.use((req, res, next) => {
     res.locals.currUser = req.user;
     next();
 });
+
+// PASTE THIS TEMPORARY CLEAN-UP ROUTE HERE:
+// app.get("/clear-all-orphaned", async (req, res) => {
+//     try {
+//         const Listing = require("./Models/Listings_Models.js"); // Check the correct path (Models or models)
+
+//         // Delete directly using the actual ID visible in the terminal
+//         const result = await Listing.deleteOne({ _id: "68d5100e88abe99ef5bbe309" });
+
+//         console.log(`Force Deleted Count: ${result.deletedCount}`);
+//         res.send(`<h1>Success!</h1><p>Kharab listing (ID: 68d5100e88abe99ef5bbe309) It has been deleted! Deleted Count: ${result.deletedCount}</p>`);
+//     } catch (err) {
+//         console.log("Force Delete Error:", err);
+//         res.status(500).send("Error: " + err.message);
+//     }
+// });
 
 // To use:- Requiring routes listingRouter.js object
 app.use("/listings", listingRouter);

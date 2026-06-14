@@ -5,6 +5,8 @@
 // requiring Listing model from another js file with another folder
 const Listing = require("../Models/Listings_models.js");
 
+const User = require("../Models/Users_models.js");
+
 // Requiring MapBox Functionality
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 
@@ -16,6 +18,25 @@ const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 // Function 1:-
 module.exports.index = async (req, res) => {
+
+    // 1. First, fetch the IDs of all remaining valid users from Atlas.
+    const validUsers = await User.find({}, "_id");
+    const validUserIds = validUsers.map(user => user._id.toString());
+
+    // 2. AUTOMATION: Delete all listings where the owner is invalid or null.
+    const cleanUpResult = await Listing.deleteMany({
+        $or: [
+            { owner: { $nin: validUserIds } }, // The Owner's ID does not exist in the users collection.
+            { owner: null },                   // The Owner has directly become null.
+            { owner: { $exists: false } }      // The Owner field itself is missing.
+        ]
+    });
+
+    // If anything gets deleted on the backend, it will be visible in the terminal.
+    if (cleanUpResult.deletedCount > 0) {
+        console.log(`[Auto-Clean] ${cleanUpResult.deletedCount} orphaned listings automatically cleared!`);
+    }
+
     const allListings = await Listing.find({});
     res.render("./Listings/Index.ejs", {allListings});
 };
@@ -67,7 +88,7 @@ module.exports.createListing = async (req, res, next) => {
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
 
-    // Here, we will print, whatever we will get response fromt the API
+    // Here, we will print, whatever we will get response from the API
     newListing.geometry = response.body.features[0].geometry;
 
     let savedListing = await newListing.save();

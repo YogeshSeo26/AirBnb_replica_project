@@ -27,23 +27,23 @@ const multer  = require('multer');
 // Requiring multer storage
 const { storage } = require("../cloudConfig.js");
 
-// Requiring Multer to uplaods on Cloudinary
+// Requiring Multer to uploads on Cloudinary
 const upload = multer({ storage }); // this is for cloudinary to store data in cloud
 
 // Route 1:- Test Listing, sample URL for testing document after adding
-router.get("/testListing", wrapAsync(async (req, res) => {
-    let sampleListing = new Listing({
-        title: "My New Villa", // String Datatype
-        description: "By the beach", // String Datatype
-        price: "1200", // Integer with String Datatype
-        location: "Calangute, Goa", // String Datatype
-        country: "India" // String Datatype
-    });
+// router.get("/testListing", wrapAsync(async (req, res) => {
+//     let sampleListing = new Listing({
+//         title: "My New Villa", // String Datatype
+//         description: "By the beach", // String Datatype
+//         price: "1200", // Integer with String Datatype
+//         location: "Calangute, Goa", // String Datatype
+//         country: "India" // String Datatype
+//     });
     
-    await sampleListing.save();
-    console.log("Sample was saved");
-    res.send("Successful testing");
-}));
+//     await sampleListing.save();
+//     console.log("Sample was saved");
+//     res.send("Successful testing");
+// }));
 
 // Router.route 1:-
 router
