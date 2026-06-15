@@ -6,6 +6,7 @@
   "version": "1.0.0",
   "main": "app_JS_14_Project_Phase_1_Part_B.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
