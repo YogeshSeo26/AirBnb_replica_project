@@ -3,3 +3,4 @@
 .env
 node_modules/
 MongoDB_Atlas_online_password.txt
+**/.DS_Store
